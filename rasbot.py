@@ -4,15 +4,7 @@ from chatterbot.trainers import ListTrainer
 from chatterbot.trainers import ChatterBotCorpusTrainer
 import os
 import time
-import boto.ec2
-import atexit
-import ssl
-from pyVim import connect
-from pyVmomi import vmodl
-from pyVmomi import vim
-#from threading import Thread
 from slackclient import SlackClient
-
 
 # starterbot's ID as an environment variable
 BOT_ID = os.environ.get("BOT_ID")

@@ -5,4 +5,4 @@
 * Add a basic command line which does the following:
     * Ask to start a wizard to accept environment exports
     * version of rasbot and ChatterBot
-* Add a short README for gettig the SLACK token, create a Slack Bot , etc.
+* Add a short README for getting the SLACK token, create a Slack Bot , etc.Œ

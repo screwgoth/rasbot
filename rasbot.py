@@ -10,25 +10,10 @@ from slackclient import SlackClient
 # SLACK_BOT_TOKEN="Some Token"
 # BOT_ID="Some ID"
 # SLACK_CHANNEL="Some Channel"
-EXAMPLE_COMMAND = "tell me"
-AT_BOT = "<@rasbot>"
+# SLACK_BOT_NAME="rasbot"
+#
+# AT_BOT = "<@rasbot>"
 
-#default DevOps values
-AWS_REGION="us-east-1"
-AWS_INSTANCE_NAME="rasbot-inst-1"
-AWS_INSTANCE_TYPE="m3.medium"
-AWS_KEY_NAME="default"
-AWS_SECURITY_GROUP="default"
-AWS_IMAGE_ID="ami-e13739f6"
-AWS_SUBNET="default"
-
-VSPHERE_HOST="127.0.0.1"
-VSPHERE_USERNAME="admin"
-VSPHERE_PASSWORD="password"
-
-OPENSTACK_HOST="127.0.0.1"
-OPENSTACK_AUTH_USERNAME="admin"
-OPENSTACK_AUTH_PASSWORD="password"
 
 def source(script):
     pipe = Popen(". %s; env" % script, stdout=PIPE, shell=True)
@@ -38,21 +23,18 @@ def source(script):
     os.environ.update(env)
 
 def init():
-    source(os.path.expanduser("~/.rasbotrc"))
-    # starterbot's ID as an environment variable
+    global AT_BOT
     global SLACK_CHANNEL, SLACK_BOT_TOKEN, SLACK_BOT_NAME
-    global AWS_INSTANCE_NAME, AWS_INSTANCE_TYPE, AWS_KEY_NAME, AWS_REGION, AWS_SUBNET, AWS_SECURITY_GROUP, AWS_IMAGE_ID
+
+    source(os.path.expanduser("~/.rasbotrc"))
+
+    # starterbot's ID as an environment variable
     BOT_ID = os.environ.get("BOT_ID")
-    AWS_ACCESS_KEY = os.environ.get("AWS_ACCESS_KEY")
-    AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
-    VSPHERE_USERNAME = os.environ.get("VSPHERE_USERNAME")
-    VSPHERE_PASSWORD = os.environ.get("VSPHERE_PASSWORD")
+
     SLACK_CHANNEL = os.environ.get("SLACK_CHANNEL")
     SLACK_BOT_TOKEN = os.environ.get("SLACK_BOT_TOKEN")
     SLACK_BOT_NAME = os.environ.get("SLACK_BOT_NAME")
-    #SLACK_CHANNEL = os.environ.get("MY_SLACK_ID")
 
-    #AT_BOT = "<@" + BOT_ID + ">:"
     AT_BOT = "<@" + BOT_ID + ">"
 
 
@@ -85,6 +67,7 @@ def get_rasbot():
         "chatterbot.corpus.english.greetings",
         "chatterbot.corpus.english.conversations"
     )
+    return chatterbot
 
 def handle_command(rasbot, command, channel):
     """
@@ -104,8 +87,8 @@ def parse_slack_output(slack_rtm_output):
         directed at the Bot, based on its ID.
     """
     output_list = slack_rtm_output
+    # print output_list
     if output_list and len(output_list) > 0:
-        print "output_list : ", output_list
         for output in output_list:
             if output and 'text' in output and AT_BOT in output['text']:
             #if output and 'text' in output and 'message' in output['type']:
